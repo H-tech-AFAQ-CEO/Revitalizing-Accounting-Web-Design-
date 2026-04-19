@@ -1,0 +1,1430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Design Proposal — Cloud-First Accounting Brands</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Sora:wght@300;400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #ffffff;
+    --bg-soft: #f8f8f6;
+    --bg-card: #ffffff;
+    --text-primary: #111110;
+    --text-secondary: #6b6b66;
+    --text-muted: #9b9b95;
+    --accent: #1a1a18;
+    --accent-mid: #2d5be3;
+    --accent-light: #eef2fd;
+    --border: rgba(0,0,0,0.08);
+    --border-strong: rgba(0,0,0,0.14);
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 16px;
+    --radius-xl: 24px;
+    --shadow-card: 0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.04);
+    --font-head: 'Sora', sans-serif;
+    --font-body: 'Inter', sans-serif;
+    --max-w: 1120px;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0e0e0d;
+      --bg-soft: #161614;
+      --bg-card: #1c1c1a;
+      --text-primary: #f0efe9;
+      --text-secondary: #9a9a93;
+      --text-muted: #5e5e58;
+      --accent-light: #1a2040;
+      --border: rgba(255,255,255,0.07);
+      --border-strong: rgba(255,255,255,0.12);
+      --shadow-card: 0 1px 3px rgba(0,0,0,0.3), 0 4px 16px rgba(0,0,0,0.2);
+    }
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--bg);
+    color: var(--text-primary);
+    line-height: 1.7;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* NAV */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+  .nav-inner {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    padding: 0 2rem;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .nav-logo {
+    font-family: var(--font-head);
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--text-primary);
+    text-decoration: none;
+    letter-spacing: -0.01em;
+  }
+  .nav-logo span { color: var(--accent-mid); }
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+  .nav-links a {
+    font-size: 13.5px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-weight: 400;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--text-primary); }
+  .nav-cta {
+    background: var(--text-primary);
+    color: var(--bg) !important;
+    padding: 7px 18px;
+    border-radius: var(--radius-sm);
+    font-weight: 500 !important;
+    font-size: 13px !important;
+    transition: opacity 0.2s !important;
+  }
+  .nav-cta:hover { opacity: 0.8; }
+  .nav-mobile-btn { display: none; background: none; border: none; cursor: pointer; color: var(--text-primary); font-size: 18px; }
+
+  /* SECTIONS */
+  section { padding: 96px 2rem; }
+  .container { max-width: var(--max-w); margin: 0 auto; }
+
+  .label-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11.5px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--accent-mid);
+    background: var(--accent-light);
+    padding: 4px 12px;
+    border-radius: 100px;
+    margin-bottom: 20px;
+  }
+
+  h1, h2, h3, h4 { font-family: var(--font-head); letter-spacing: -0.02em; }
+
+  /* HERO */
+  #hero {
+    padding: 120px 2rem 96px;
+    background: var(--bg);
+  }
+  .hero-inner {
+    max-width: var(--max-w);
+    margin: 0 auto;
+  }
+  .hero-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 28px;
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+  .hero-eyebrow-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #22c55e;
+    flex-shrink: 0;
+    box-shadow: 0 0 0 3px rgba(34,197,94,0.15);
+  }
+  h1 {
+    font-size: clamp(36px, 5vw, 64px);
+    font-weight: 600;
+    line-height: 1.1;
+    color: var(--text-primary);
+    max-width: 800px;
+    margin-bottom: 24px;
+  }
+  h1 em { font-style: normal; color: var(--accent-mid); }
+  .hero-sub {
+    font-size: 18px;
+    color: var(--text-secondary);
+    max-width: 560px;
+    line-height: 1.65;
+    margin-bottom: 44px;
+    font-weight: 300;
+  }
+  .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--text-primary);
+    color: var(--bg);
+    padding: 13px 26px;
+    border-radius: var(--radius-md);
+    font-size: 14.5px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: opacity 0.2s, transform 0.15s;
+  }
+  .btn-primary:hover { opacity: 0.85; transform: translateY(-1px); }
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    color: var(--text-primary);
+    border: 1px solid var(--border-strong);
+    padding: 13px 26px;
+    border-radius: var(--radius-md);
+    font-size: 14.5px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.15s;
+  }
+  .btn-secondary:hover { background: var(--bg-soft); transform: translateY(-1px); }
+  .hero-stats {
+    display: flex;
+    gap: 48px;
+    margin-top: 72px;
+    padding-top: 48px;
+    border-top: 1px solid var(--border);
+    flex-wrap: wrap;
+  }
+  .stat-item {}
+  .stat-num {
+    font-family: var(--font-head);
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--text-primary);
+    letter-spacing: -0.03em;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .stat-label { font-size: 13px; color: var(--text-muted); }
+
+  /* BRANDS */
+  #brands { background: var(--bg-soft); }
+  .section-header { margin-bottom: 56px; }
+  .section-header h2 {
+    font-size: clamp(26px, 3.5vw, 40px);
+    font-weight: 600;
+    margin-bottom: 14px;
+    line-height: 1.2;
+  }
+  .section-header p {
+    font-size: 16px;
+    color: var(--text-secondary);
+    max-width: 520px;
+    font-weight: 300;
+  }
+  .brands-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+  }
+  .brand-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 28px;
+    transition: box-shadow 0.25s, transform 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .brand-card:hover { box-shadow: var(--shadow-card); transform: translateY(-2px); }
+  .brand-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+  }
+  .brand-card.cfo::before { background: var(--accent-mid); }
+  .brand-card.accounting::before { background: #0ea5e9; }
+  .brand-card.af::before { background: #8b5cf6; }
+  .brand-card.six::before { background: #f59e0b; }
+  .brand-icon {
+    width: 44px; height: 44px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    margin-bottom: 18px;
+  }
+  .brand-card.cfo .brand-icon { background: #eef2fd; color: var(--accent-mid); }
+  .brand-card.accounting .brand-icon { background: #f0f9ff; color: #0ea5e9; }
+  .brand-card.af .brand-icon { background: #f5f3ff; color: #8b5cf6; }
+  .brand-card.six .brand-icon { background: #fffbeb; color: #f59e0b; }
+  @media (prefers-color-scheme: dark) {
+    .brand-card.cfo .brand-icon { background: #1a2040; color: #6b8ef7; }
+    .brand-card.accounting .brand-icon { background: #0c1f2e; color: #38bdf8; }
+    .brand-card.af .brand-icon { background: #1e1530; color: #a78bfa; }
+    .brand-card.six .brand-icon { background: #241900; color: #fbbf24; }
+  }
+  .brand-name {
+    font-family: var(--font-head);
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: var(--text-primary);
+  }
+  .brand-url {
+    font-size: 11.5px;
+    color: var(--text-muted);
+    margin-bottom: 14px;
+    font-family: 'Courier New', monospace;
+  }
+  .brand-desc { font-size: 13.5px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 18px; }
+  .brand-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tag {
+    font-size: 11px;
+    padding: 3px 9px;
+    border-radius: 100px;
+    border: 1px solid var(--border-strong);
+    color: var(--text-secondary);
+    font-weight: 500;
+  }
+
+  /* MOCKUP / FLAGSHIP */
+  #flagship { background: var(--bg); }
+  .mockup-wrapper {
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xl);
+    padding: 32px;
+    overflow: hidden;
+  }
+  .browser-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .browser-dots { display: flex; gap: 6px; }
+  .browser-dots span {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--border-strong);
+  }
+  .browser-url {
+    flex: 1;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 5px 12px;
+    font-size: 12px;
+    color: var(--text-muted);
+    font-family: 'Courier New', monospace;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .browser-url i { font-size: 10px; color: #22c55e; }
+  .site-preview {
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .site-nav-mock {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 28px;
+    border-bottom: 1px solid var(--border);
+  }
+  .mock-logo { font-family: var(--font-head); font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .mock-logo span { color: var(--accent-mid); }
+  .mock-nav { display: flex; gap: 24px; }
+  .mock-nav a { font-size: 12px; color: var(--text-secondary); text-decoration: none; }
+  .mock-btn-sm {
+    background: var(--text-primary);
+    color: var(--bg);
+    padding: 6px 16px;
+    border-radius: var(--radius-sm);
+    font-size: 12px;
+    font-weight: 500;
+  }
+  .site-hero-mock {
+    padding: 56px 40px 48px;
+    background: var(--bg-card);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: center;
+  }
+  @media (max-width: 640px) {
+    .site-hero-mock { grid-template-columns: 1fr; }
+    .mock-nav { display: none; }
+  }
+  .mock-h1 {
+    font-family: var(--font-head);
+    font-size: 26px;
+    font-weight: 600;
+    line-height: 1.2;
+    margin-bottom: 12px;
+    letter-spacing: -0.02em;
+  }
+  .mock-h1 em { font-style: normal; color: var(--accent-mid); }
+  .mock-p { font-size: 13px; color: var(--text-secondary); margin-bottom: 20px; line-height: 1.6; }
+  .mock-actions { display: flex; gap: 10px; }
+  .mock-btn { background: var(--text-primary); color: var(--bg); padding: 9px 18px; border-radius: var(--radius-sm); font-size: 12px; font-weight: 500; }
+  .mock-btn-outline { background: transparent; border: 1px solid var(--border-strong); color: var(--text-primary); padding: 9px 18px; border-radius: var(--radius-sm); font-size: 12px; font-weight: 500; }
+  .mock-kpi-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .kpi-card {
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 16px;
+  }
+  .kpi-label { font-size: 11px; color: var(--text-muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.05em; }
+  .kpi-value { font-family: var(--font-head); font-size: 20px; font-weight: 600; color: var(--text-primary); }
+  .kpi-change { font-size: 11px; color: #22c55e; margin-top: 2px; display: flex; align-items: center; gap: 3px; }
+  .site-features-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border-top: 1px solid var(--border);
+  }
+  @media (max-width: 640px) { .site-features-row { grid-template-columns: 1fr; } }
+  .site-feature {
+    padding: 20px 24px;
+    border-right: 1px solid var(--border);
+  }
+  .site-feature:last-child { border-right: none; }
+  .site-feature i { font-size: 15px; color: var(--accent-mid); margin-bottom: 8px; display: block; }
+  .site-feature-label { font-size: 12px; font-weight: 500; color: var(--text-primary); margin-bottom: 3px; }
+  .site-feature-desc { font-size: 11px; color: var(--text-muted); line-height: 1.5; }
+
+  /* FEATURES / DELIVERABLES */
+  #deliverables { background: var(--bg-soft); }
+  .deliverables-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+  }
+  .deliverable-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 26px;
+    display: flex;
+    gap: 18px;
+  }
+  .deliverable-icon {
+    width: 40px; height: 40px;
+    background: var(--accent-light);
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent-mid);
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+  .deliverable-content h4 { font-size: 14.5px; font-weight: 600; margin-bottom: 5px; }
+  .deliverable-content p { font-size: 13px; color: var(--text-secondary); line-height: 1.55; }
+
+  /* FEE ESTIMATOR */
+  #estimator { background: var(--bg); }
+  .estimator-wrap {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: start;
+  }
+  @media (max-width: 768px) { .estimator-wrap { grid-template-columns: 1fr; } }
+  .estimator-card {
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xl);
+    padding: 36px;
+  }
+  .est-title { font-family: var(--font-head); font-size: 16px; font-weight: 600; margin-bottom: 28px; display: flex; align-items: center; gap: 8px; }
+  .form-row { margin-bottom: 20px; }
+  .form-label { display: block; font-size: 12.5px; color: var(--text-secondary); margin-bottom: 8px; font-weight: 500; }
+  .form-select, .form-range {
+    width: 100%;
+    background: var(--bg-card);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-sm);
+    padding: 10px 12px;
+    font-size: 13.5px;
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    outline: none;
+    appearance: none;
+    -webkit-appearance: none;
+    cursor: pointer;
+  }
+  .form-select:focus { border-color: var(--accent-mid); }
+  input[type=range] {
+    -webkit-appearance: none;
+    appearance: none;
+    background: var(--border-strong);
+    height: 4px;
+    border-radius: 2px;
+    cursor: pointer;
+    border: none;
+    padding: 0;
+  }
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: var(--accent-mid);
+    cursor: pointer;
+    border: 2px solid var(--bg);
+  }
+  .range-labels { display: flex; justify-content: space-between; margin-top: 6px; font-size: 11px; color: var(--text-muted); }
+  .est-result {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    margin-top: 20px;
+    text-align: center;
+  }
+  .est-range-label { font-size: 12px; color: var(--text-muted); margin-bottom: 6px; }
+  .est-price {
+    font-family: var(--font-head);
+    font-size: 38px;
+    font-weight: 600;
+    color: var(--text-primary);
+    letter-spacing: -0.03em;
+    line-height: 1;
+  }
+  .est-price-sub { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
+  .est-disclaimer { font-size: 11px; color: var(--text-muted); margin-top: 12px; }
+  .estimator-text h3 { font-size: 28px; font-weight: 600; line-height: 1.25; margin-bottom: 16px; }
+  .estimator-text p { font-size: 15px; color: var(--text-secondary); line-height: 1.65; margin-bottom: 20px; font-weight: 300; }
+  .check-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .check-list li { display: flex; align-items: flex-start; gap: 10px; font-size: 14px; color: var(--text-secondary); }
+  .check-list li i { color: #22c55e; margin-top: 3px; font-size: 13px; flex-shrink: 0; }
+
+  /* TIMELINE */
+  #timeline { background: var(--bg-soft); }
+  .timeline-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 0;
+    position: relative;
+  }
+  .timeline-grid::before {
+    content: '';
+    position: absolute;
+    top: 22px;
+    left: 44px;
+    right: 44px;
+    height: 1px;
+    background: var(--border-strong);
+    z-index: 0;
+  }
+  @media (max-width: 600px) { .timeline-grid::before { display: none; } }
+  .timeline-step {
+    position: relative;
+    z-index: 1;
+    padding: 0 16px;
+    text-align: center;
+  }
+  .timeline-dot {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    background: var(--bg-card);
+    border: 1px solid var(--border-strong);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 16px;
+    font-size: 15px;
+    color: var(--accent-mid);
+    position: relative;
+    z-index: 1;
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .timeline-step.active .timeline-dot {
+    background: var(--accent-mid);
+    color: #fff;
+    border-color: var(--accent-mid);
+  }
+  .timeline-date { font-size: 11px; font-weight: 600; color: var(--accent-mid); letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 4px; }
+  .timeline-label { font-size: 13px; font-weight: 500; color: var(--text-primary); margin-bottom: 4px; }
+  .timeline-desc { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
+
+  /* BILINGUAL */
+  #bilingual { background: var(--bg); }
+  .bilingual-demo {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  @media (max-width: 640px) { .bilingual-demo { grid-template-columns: 1fr; } }
+  .lang-card {
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+  .lang-card-header {
+    padding: 12px 20px;
+    background: var(--bg-card);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-secondary);
+  }
+  .lang-flag { font-size: 16px; }
+  .lang-card-body { padding: 24px; }
+  .lang-card-body h3 { font-size: 18px; font-weight: 600; margin-bottom: 8px; line-height: 1.3; }
+  .lang-card-body p { font-size: 13.5px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 16px; }
+  .lang-toggle-demo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 32px;
+    justify-content: center;
+  }
+  .lang-btn {
+    padding: 8px 20px;
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    border: 1px solid var(--border-strong);
+    background: var(--bg-card);
+    color: var(--text-secondary);
+    transition: all 0.2s;
+    font-family: var(--font-body);
+  }
+  .lang-btn.active { background: var(--text-primary); color: var(--bg); border-color: var(--text-primary); }
+
+  /* PERFORMANCE */
+  #performance { background: var(--bg-soft); }
+  .perf-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 16px;
+    margin-bottom: 40px;
+  }
+  .perf-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    text-align: center;
+  }
+  .perf-score {
+    font-family: var(--font-head);
+    font-size: 44px;
+    font-weight: 600;
+    color: #22c55e;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .perf-score.amber { color: #f59e0b; }
+  .perf-label { font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+  .perf-bar-wrap { margin-bottom: 8px; }
+  .perf-bar-label { display: flex; justify-content: space-between; font-size: 12px; color: var(--text-secondary); margin-bottom: 6px; }
+  .perf-bar { height: 6px; border-radius: 3px; background: var(--border-strong); overflow: hidden; }
+  .perf-bar-fill { height: 100%; border-radius: 3px; background: #22c55e; transition: width 1s ease; }
+  .perf-bar-fill.amber { background: #f59e0b; }
+  .perf-bar-fill.blue { background: var(--accent-mid); }
+
+  /* CAREERS */
+  #careers { background: var(--bg); }
+  .careers-split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+    align-items: center;
+  }
+  @media (max-width: 768px) { .careers-split { grid-template-columns: 1fr; } }
+  .careers-text h2 { font-size: clamp(24px, 3vw, 36px); font-weight: 600; margin-bottom: 16px; line-height: 1.25; }
+  .careers-text p { font-size: 15px; color: var(--text-secondary); line-height: 1.65; margin-bottom: 28px; font-weight: 300; }
+  .roles-list { display: flex; flex-direction: column; gap: 10px; }
+  .role-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 14px 18px;
+    text-decoration: none;
+    transition: border-color 0.2s, transform 0.15s;
+  }
+  .role-row:hover { border-color: var(--border-strong); transform: translateX(3px); }
+  .role-info { display: flex; align-items: center; gap: 12px; }
+  .role-icon { width: 32px; height: 32px; background: var(--accent-light); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; color: var(--accent-mid); font-size: 13px; }
+  .role-name { font-size: 14px; font-weight: 500; color: var(--text-primary); }
+  .role-meta { font-size: 12px; color: var(--text-muted); }
+  .role-badge { font-size: 11px; color: #22c55e; background: rgba(34,197,94,0.1); padding: 3px 9px; border-radius: 100px; font-weight: 500; }
+  .culture-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .culture-item {
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 18px;
+  }
+  .culture-item i { font-size: 18px; color: var(--accent-mid); margin-bottom: 10px; display: block; }
+  .culture-item h4 { font-size: 13.5px; font-weight: 600; margin-bottom: 4px; }
+  .culture-item p { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
+
+  /* SUBMISSION */
+  #submission { background: var(--bg-soft); }
+  .submission-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xl);
+    padding: 48px;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+  .submission-card h2 { font-size: 28px; font-weight: 600; margin-bottom: 8px; }
+  .submission-card > p { font-size: 15px; color: var(--text-secondary); margin-bottom: 36px; font-weight: 300; }
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 540px) { .form-grid { grid-template-columns: 1fr; } }
+  .form-field { display: flex; flex-direction: column; gap: 7px; }
+  .form-field.full { grid-column: 1 / -1; }
+  .form-field label { font-size: 12.5px; font-weight: 500; color: var(--text-secondary); }
+  .form-input, .form-textarea {
+    background: var(--bg-soft);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-sm);
+    padding: 11px 14px;
+    font-size: 14px;
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    outline: none;
+    transition: border-color 0.2s;
+    width: 100%;
+  }
+  .form-input:focus, .form-textarea:focus { border-color: var(--accent-mid); }
+  .form-textarea { min-height: 100px; resize: vertical; }
+  .submit-btn {
+    width: 100%;
+    background: var(--text-primary);
+    color: var(--bg);
+    border: none;
+    padding: 14px;
+    border-radius: var(--radius-md);
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    font-family: var(--font-body);
+    margin-top: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: opacity 0.2s;
+  }
+  .submit-btn:hover { opacity: 0.85; }
+  .deadline-banner {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--accent-light);
+    border: 1px solid rgba(45,91,227,0.2);
+    border-radius: var(--radius-md);
+    padding: 12px 16px;
+    margin-bottom: 28px;
+    font-size: 13.5px;
+    color: var(--accent-mid);
+  }
+  .deadline-banner i { font-size: 14px; flex-shrink: 0; }
+
+  /* FOOTER */
+  footer {
+    background: var(--text-primary);
+    color: var(--bg);
+    padding: 48px 2rem 36px;
+  }
+  .footer-inner {
+    max-width: var(--max-w);
+    margin: 0 auto;
+  }
+  .footer-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 24px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+  .footer-logo { font-family: var(--font-head); font-size: 18px; font-weight: 600; margin-bottom: 6px; }
+  .footer-logo span { opacity: 0.5; }
+  .footer-tagline { font-size: 13px; opacity: 0.4; }
+  .footer-brands { display: flex; gap: 32px; flex-wrap: wrap; }
+  .footer-brand-group h5 { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; opacity: 0.4; margin-bottom: 10px; }
+  .footer-brand-group a { display: block; font-size: 13px; opacity: 0.6; text-decoration: none; margin-bottom: 6px; transition: opacity 0.2s; }
+  .footer-brand-group a:hover { opacity: 1; }
+  .footer-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 24px; font-size: 12px; opacity: 0.35; flex-wrap: wrap; gap: 8px; }
+
+  /* RESPONSIVE NAV */
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+    .nav-mobile-btn { display: block; }
+    section { padding: 72px 1.25rem; }
+    #hero { padding: 80px 1.25rem 64px; }
+    .hero-stats { gap: 28px; }
+    .brands-grid { grid-template-columns: 1fr 1fr; }
+    .timeline-grid { grid-template-columns: 1fr 1fr; }
+    .timeline-grid::before { display: none; }
+  }
+  @media (max-width: 480px) {
+    .brands-grid { grid-template-columns: 1fr; }
+    .timeline-grid { grid-template-columns: 1fr; }
+    .submission-card { padding: 28px 20px; }
+  }
+
+  /* SCROLL ANIMATIONS */
+  .fade-up { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+  .stagger-1 { transition-delay: 0.05s; }
+  .stagger-2 { transition-delay: 0.12s; }
+  .stagger-3 { transition-delay: 0.19s; }
+  .stagger-4 { transition-delay: 0.26s; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">Cloud<span>First</span> Studio</a>
+    <ul class="nav-links">
+      <li><a href="#brands">Brands</a></li>
+      <li><a href="#flagship">Mockup</a></li>
+      <li><a href="#estimator">Estimator</a></li>
+      <li><a href="#timeline">Timeline</a></li>
+      <li><a href="#careers">Careers</a></li>
+      <li><a href="#submission" class="nav-cta">Submit Proposal</a></li>
+    </ul>
+    <button class="nav-mobile-btn" onclick="document.querySelector('.nav-links').style.display = document.querySelector('.nav-links').style.display === 'flex' ? 'none' : 'flex'; document.querySelector('.nav-links').style.flexDirection = 'column'; document.querySelector('.nav-links').style.position = 'absolute'; document.querySelector('.nav-links').style.top = '60px'; document.querySelector('.nav-links').style.left = '0'; document.querySelector('.nav-links').style.right = '0'; document.querySelector('.nav-links').style.background = 'var(--bg)'; document.querySelector('.nav-links').style.padding = '20px'; document.querySelector('.nav-links').style.borderBottom = '1px solid var(--border)'; document.querySelector('.nav-links').style.zIndex = '99';" aria-label="Menu">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">
+      <span class="hero-eyebrow-dot"></span>
+      Design Pitch — Cloud-First Accounting Brands &nbsp;·&nbsp; Phase 1 Submission
+    </div>
+    <h1>Four brands.<br><em>One vision.</em><br>Built for leads.</h1>
+    <p class="hero-sub">A premium, ultra-lightweight redesign proposal for The CFO Site, The Accounting Site, AF Accounting, and 6ixFinance — designed for speed, conversions, and global talent recruitment.</p>
+    <div class="hero-actions">
+      <a href="#flagship" class="btn-primary"><i class="fa-regular fa-eye"></i> View Flagship Mockup</a>
+      <a href="#submission" class="btn-secondary"><i class="fa-regular fa-paper-plane"></i> Submit Enquiry</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-num">4</div>
+        <div class="stat-label">Websites in scope</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">&lt;1s</div>
+        <div class="stat-label">Target load time</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">100</div>
+        <div class="stat-label">Lighthouse score target</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">May 24</div>
+        <div class="stat-label">Launch commitment</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">2</div>
+        <div class="stat-label">Languages (EN / FR)</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BRANDS -->
+<section id="brands">
+  <div class="container">
+    <div class="section-header fade-up">
+      <div class="label-chip"><i class="fa-solid fa-layer-group"></i> Project Scope</div>
+      <h2>Four distinct brands.<br>One cohesive design language.</h2>
+      <p>Each brand targets a unique niche and audience, demanding purpose-built architecture and messaging — unified by a shared minimalist, cloud-native aesthetic.</p>
+    </div>
+    <div class="brands-grid">
+      <div class="brand-card cfo fade-up stagger-1">
+        <div class="brand-icon"><i class="fa-solid fa-chart-line"></i></div>
+        <div class="brand-name">The CFO Site</div>
+        <div class="brand-url">www.thecfo.site</div>
+        <div class="brand-desc">Fractional CFO and controllership services. High-level Power BI reporting, KPI dashboards, and integrated time-tracking solutions for growth-stage companies.</div>
+        <div class="brand-tags">
+          <span class="tag">Power BI</span>
+          <span class="tag">Fractional CFO</span>
+          <span class="tag">KPI Tracking</span>
+          <span class="tag">Tiered Pricing</span>
+        </div>
+      </div>
+      <div class="brand-card accounting fade-up stagger-2">
+        <div class="brand-icon"><i class="fa-solid fa-receipt"></i></div>
+        <div class="brand-name">The Accounting Site</div>
+        <div class="brand-url">www.theaccounting.site</div>
+        <div class="brand-desc">High-volume compliance for non-Quebec businesses. Bookkeeping, sales tax filing, and payroll efficiency at scale — all delivered remotely.</div>
+        <div class="brand-tags">
+          <span class="tag">Bookkeeping</span>
+          <span class="tag">Sales Tax</span>
+          <span class="tag">Payroll</span>
+          <span class="tag">Fee Estimator</span>
+        </div>
+      </div>
+      <div class="brand-card af fade-up stagger-3">
+        <div class="brand-icon"><i class="fa-solid fa-globe"></i></div>
+        <div class="brand-name">AF Accounting</div>
+        <div class="brand-url">www.afaccounting.ca</div>
+        <div class="brand-desc">Quebec-market compliance specialists. Full English and French bilingual experience — seamlessly switching language without sacrificing performance or SEO.</div>
+        <div class="brand-tags">
+          <span class="tag">Bilingual EN/FR</span>
+          <span class="tag">Quebec Market</span>
+          <span class="tag">i18n</span>
+          <span class="tag">SEO-Ready</span>
+        </div>
+      </div>
+      <div class="brand-card six fade-up stagger-4">
+        <div class="brand-icon"><i class="fa-solid fa-building-columns"></i></div>
+        <div class="brand-name">6ixFinance</div>
+        <div class="brand-url">6ixfinance.com</div>
+        <div class="brand-desc">Specialized finance for public companies. Cloud migration strategy and institutional reporting — targeting CFOs, auditors, and board-level stakeholders.</div>
+        <div class="brand-tags">
+          <span class="tag">Public Companies</span>
+          <span class="tag">Cloud Migration</span>
+          <span class="tag">Institutional</span>
+          <span class="tag">IFRS Reporting</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FLAGSHIP MOCKUP -->
+<section id="flagship">
+  <div class="container">
+    <div class="section-header fade-up">
+      <div class="label-chip"><i class="fa-solid fa-paintbrush"></i> Visual Concept</div>
+      <h2>Flagship mockup — The CFO Site</h2>
+      <p>High-fidelity direction for the lead brand. Clean, data-forward, conversion-optimized — built for the modern CFO audience.</p>
+    </div>
+    <div class="mockup-wrapper fade-up">
+      <div class="browser-bar">
+        <div class="browser-dots"><span></span><span></span><span></span></div>
+        <div class="browser-url"><i class="fa-solid fa-lock"></i> www.thecfo.site</div>
+      </div>
+      <div class="site-preview">
+        <div class="site-nav-mock">
+          <div class="mock-logo">The <span>CFO</span> Site</div>
+          <div class="mock-nav">
+            <a href="#">Services</a>
+            <a href="#">Pricing</a>
+            <a href="#">Reports</a>
+            <a href="#">Careers</a>
+          </div>
+          <div class="mock-btn-sm">Get a Quote</div>
+        </div>
+        <div class="site-hero-mock">
+          <div>
+            <div class="mock-h1">Your fractional CFO,<br><em>on demand.</em></div>
+            <div class="mock-p">Real-time Power BI dashboards, KPI tracking, and controllership — without the full-time cost. Designed for companies scaling from $2M to $50M revenue.</div>
+            <div class="mock-actions">
+              <div class="mock-btn">See Pricing</div>
+              <div class="mock-btn-outline">View Demo</div>
+            </div>
+          </div>
+          <div class="mock-kpi-grid">
+            <div class="kpi-card">
+              <div class="kpi-label">MRR</div>
+              <div class="kpi-value">$284K</div>
+              <div class="kpi-change"><i class="fa-solid fa-arrow-trend-up"></i> +12.4%</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label">Burn Rate</div>
+              <div class="kpi-value">$48K</div>
+              <div class="kpi-change" style="color: #f59e0b;"><i class="fa-solid fa-minus"></i> Stable</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label">Runway</div>
+              <div class="kpi-value">18 mo</div>
+              <div class="kpi-change"><i class="fa-solid fa-arrow-trend-up"></i> +2 mo</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label">EBITDA</div>
+              <div class="kpi-value">22.1%</div>
+              <div class="kpi-change"><i class="fa-solid fa-arrow-trend-up"></i> +4pp</div>
+            </div>
+          </div>
+        </div>
+        <div class="site-features-row">
+          <div class="site-feature">
+            <i class="fa-brands fa-microsoft"></i>
+            <div class="site-feature-label">Power BI Reporting</div>
+            <div class="site-feature-desc">Embedded dashboards synced to your live data</div>
+          </div>
+          <div class="site-feature">
+            <i class="fa-solid fa-clock"></i>
+            <div class="site-feature-label">Time Tracking</div>
+            <div class="site-feature-desc">Integrated with Harvest, Toggl, and QuickBooks</div>
+          </div>
+          <div class="site-feature">
+            <i class="fa-solid fa-file-invoice-dollar"></i>
+            <div class="site-feature-label">Fee Estimator</div>
+            <div class="site-feature-desc">Interactive pricing guide — no sales call required</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DELIVERABLES -->
+<section id="deliverables">
+  <div class="container">
+    <div class="section-header fade-up">
+      <div class="label-chip"><i class="fa-solid fa-list-check"></i> What We Deliver</div>
+      <h2>Every lead-gen requirement,<br>built in from day one.</h2>
+      <p>No plugins, no bloat — purpose-built features that convert visitors into clients and applicants.</p>
+    </div>
+    <div class="deliverables-grid">
+      <div class="deliverable-card fade-up stagger-1">
+        <div class="deliverable-icon"><i class="fa-solid fa-calculator"></i></div>
+        <div class="deliverable-content">
+          <h4>Interactive Fee Estimators</h4>
+          <p>Custom-built calculators for compliance brands — transactions, payroll headcount, jurisdiction — producing instant price ranges without sales calls.</p>
+        </div>
+      </div>
+      <div class="deliverable-card fade-up stagger-2">
+        <div class="deliverable-icon"><i class="fa-solid fa-file-arrow-down"></i></div>
+        <div class="deliverable-content">
+          <h4>Lead Magnet PDFs</h4>
+          <p>Downloadable checklists, guides, and whitepapers tailored per brand — capturing emails in exchange for high-value compliance and finance resources.</p>
+        </div>
+      </div>
+      <div class="deliverable-card fade-up stagger-3">
+        <div class="deliverable-icon"><i class="fa-solid fa-language"></i></div>
+        <div class="deliverable-content">
+          <h4>Bilingual EN/FR (AF Accounting)</h4>
+          <p>Full i18n implementation for AF Accounting — clean URL-based language switching, hreflang SEO, and zero content duplication across both languages.</p>
+        </div>
+      </div>
+      <div class="deliverable-card fade-up stagger-4">
+        <div class="deliverable-icon"><i class="fa-solid fa-gauge-high"></i></div>
+        <div class="deliverable-content">
+          <h4>Performance-First Architecture</h4>
+          <p>Static-first builds with minimal JavaScript. Target: Lighthouse 100 across Performance, Accessibility, Best Practices, and SEO on all four domains.</p>
+        </div>
+      </div>
+      <div class="deliverable-card fade-up stagger-1">
+        <div class="deliverable-icon"><i class="fa-solid fa-laptop-house"></i></div>
+        <div class="deliverable-content">
+          <h4>Careers & Employer Branding</h4>
+          <p>Dedicated recruitment sections showcasing the 100% remote, global culture — designed to attract bookkeepers through CFO-level candidates worldwide.</p>
+        </div>
+      </div>
+      <div class="deliverable-card fade-up stagger-2">
+        <div class="deliverable-icon"><i class="fa-solid fa-sliders"></i></div>
+        <div class="deliverable-content">
+          <h4>Tiered Pricing Guides</h4>
+          <p>Transparent, Zenbooks-style pricing tables for CFO-tier services — helping prospects self-qualify and shortening the sales cycle significantly.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEE ESTIMATOR DEMO -->
+<section id="estimator">
+  <div class="container">
+    <div class="estimator-wrap">
+      <div class="estimator-text fade-up">
+        <div class="label-chip"><i class="fa-solid fa-wand-magic-sparkles"></i> Interactive Tool Preview</div>
+        <h3>Fee estimator — live demo concept</h3>
+        <p>Every compliance brand gets a custom built-in estimator. Visitors get instant pricing transparency. You get a warm lead with known context — no discovery call required to qualify them.</p>
+        <ul class="check-list">
+          <li><i class="fa-solid fa-circle-check"></i> Zero friction — no forms to fill before seeing estimates</li>
+          <li><i class="fa-solid fa-circle-check"></i> Automatically routes to a CTA at the end</li>
+          <li><i class="fa-solid fa-circle-check"></i> Embedded directly in the page — no pop-ups</li>
+          <li><i class="fa-solid fa-circle-check"></i> Configurable ranges updated via CMS</li>
+        </ul>
+      </div>
+      <div class="estimator-card fade-up stagger-2">
+        <div class="est-title"><i class="fa-solid fa-calculator" style="color: var(--accent-mid);"></i> Accounting Fee Estimator</div>
+        <div class="form-row">
+          <label class="form-label">Business type</label>
+          <select class="form-select" id="bizType" onchange="calcEstimate()">
+            <option value="1">Sole proprietor / Freelancer</option>
+            <option value="1.4">Small incorporated business</option>
+            <option value="1.8">Growing SMB (5–20 employees)</option>
+            <option value="2.4">Mid-market (20–100 employees)</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <label class="form-label">Monthly transactions: <strong id="txnLabel">80</strong></label>
+          <input type="range" min="20" max="500" step="10" value="80" id="txnRange" oninput="document.getElementById('txnLabel').textContent=this.value; calcEstimate()">
+          <div class="range-labels"><span>20</span><span>500+</span></div>
+        </div>
+        <div class="form-row">
+          <label class="form-label">Payroll employees: <strong id="payLabel">0</strong></label>
+          <input type="range" min="0" max="50" step="1" value="0" id="payRange" oninput="document.getElementById('payLabel').textContent=this.value; calcEstimate()">
+          <div class="range-labels"><span>0</span><span>50+</span></div>
+        </div>
+        <div class="form-row">
+          <label class="form-label">Sales tax filings needed</label>
+          <select class="form-select" id="taxFiling" onchange="calcEstimate()">
+            <option value="0">None</option>
+            <option value="60">HST / GST only</option>
+            <option value="120">HST + QST</option>
+            <option value="200">Multi-provincial</option>
+          </select>
+        </div>
+        <div class="est-result">
+          <div class="est-range-label">Estimated monthly fee</div>
+          <div class="est-price" id="estPrice">$420</div>
+          <div class="est-price-sub">/ month — billed monthly, cancel anytime</div>
+          <div class="est-disclaimer">Estimate only. Final quote provided after a 15-min discovery call.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TIMELINE -->
+<section id="timeline">
+  <div class="container">
+    <div class="section-header fade-up" style="text-align:center; margin-bottom: 64px;">
+      <div class="label-chip" style="margin: 0 auto 20px;"><i class="fa-solid fa-calendar-check"></i> Timeline Commitment</div>
+      <h2>All four sites live by May 24, 2026.</h2>
+      <p style="margin: 0 auto;">A realistic, fast-track schedule built around your deadline — with room for review cycles and zero compromise on quality.</p>
+    </div>
+    <div class="timeline-grid fade-up">
+      <div class="timeline-step active">
+        <div class="timeline-dot"><i class="fa-solid fa-flag"></i></div>
+        <div class="timeline-date">Apr 21</div>
+        <div class="timeline-label">Kickoff & Brand Brief</div>
+        <div class="timeline-desc">Scope sign-off, access handover, content audit</div>
+      </div>
+      <div class="timeline-step">
+        <div class="timeline-dot"><i class="fa-solid fa-pencil-ruler"></i></div>
+        <div class="timeline-date">Apr 28</div>
+        <div class="timeline-label">Design Approval</div>
+        <div class="timeline-desc">All four brands: full mockup review round</div>
+      </div>
+      <div class="timeline-step">
+        <div class="timeline-dot"><i class="fa-solid fa-code"></i></div>
+        <div class="timeline-date">May 9</div>
+        <div class="timeline-label">Development Build</div>
+        <div class="timeline-desc">Staging builds live with estimators & bilingual</div>
+      </div>
+      <div class="timeline-step">
+        <div class="timeline-dot"><i class="fa-solid fa-vial"></i></div>
+        <div class="timeline-date">May 17</div>
+        <div class="timeline-label">QA & Content Load</div>
+        <div class="timeline-desc">Final copy, SEO, performance testing</div>
+      </div>
+      <div class="timeline-step">
+        <div class="timeline-dot"><i class="fa-solid fa-rocket"></i></div>
+        <div class="timeline-date">May 24</div>
+        <div class="timeline-label">Go Live</div>
+        <div class="timeline-desc">All four domains launched and indexed</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BILINGUAL -->
+<section id="bilingual">
+  <div class="container">
+    <div class="section-header fade-up">
+      <div class="label-chip"><i class="fa-solid fa-earth-americas"></i> Bilingual Capability</div>
+      <h2>Full EN/FR — seamless, fast, SEO-perfect.</h2>
+      <p>AF Accounting's bilingual build uses URL-based routing (/en/ and /fr/) with hreflang tags — no JavaScript language detection, no flicker, no duplicate content penalties.</p>
+    </div>
+    <div class="bilingual-demo fade-up">
+      <div class="lang-card" id="langEn">
+        <div class="lang-card-header">
+          <span class="lang-flag">🇨🇦</span> English — afaccounting.ca/en/
+        </div>
+        <div class="lang-card-body">
+          <h3>Quebec Compliance,<br>Done Right.</h3>
+          <p>Full-service bookkeeping, QST/HST remittances, and payroll for Quebec-based businesses — handled by certified professionals who understand the nuances of provincial compliance.</p>
+          <a href="#" style="font-size:13px; color: var(--accent-mid); font-weight:500; text-decoration:none;">Get a free estimate <i class="fa-solid fa-arrow-right" style="font-size:11px;"></i></a>
+        </div>
+      </div>
+      <div class="lang-card" id="langFr">
+        <div class="lang-card-header">
+          <span class="lang-flag">🇨🇦</span> Français — afaccounting.ca/fr/
+        </div>
+        <div class="lang-card-body">
+          <h3>La conformité au Québec,<br>bien faite.</h3>
+          <p>Services complets de tenue de livres, remises de TPS/TVQ et paie pour les entreprises québécoises — pris en charge par des professionnels certifiés qui maîtrisent la conformité provinciale.</p>
+          <a href="#" style="font-size:13px; color: var(--accent-mid); font-weight:500; text-decoration:none;">Obtenir une estimation <i class="fa-solid fa-arrow-right" style="font-size:11px;"></i></a>
+        </div>
+      </div>
+    </div>
+    <div class="lang-toggle-demo fade-up">
+      <button class="lang-btn active" onclick="toggleLang(true, this)">English</button>
+      <button class="lang-btn" onclick="toggleLang(false, this)">Français</button>
+    </div>
+  </div>
+</section>
+
+<!-- PERFORMANCE -->
+<section id="performance">
+  <div class="container">
+    <div class="section-header fade-up" style="text-align:center;">
+      <div class="label-chip" style="margin: 0 auto 20px;"><i class="fa-solid fa-bolt"></i> Performance Targets</div>
+      <h2>Ultra-lightweight by default.</h2>
+      <p style="margin: 0 auto;">Static-first architecture, deferred scripts, optimized fonts, and next-gen image formats. Every kilobyte earns its place.</p>
+    </div>
+    <div class="perf-grid fade-up">
+      <div class="perf-card">
+        <div class="perf-score">100</div>
+        <div class="perf-label">Performance</div>
+      </div>
+      <div class="perf-card">
+        <div class="perf-score">100</div>
+        <div class="perf-label">Accessibility</div>
+      </div>
+      <div class="perf-card">
+        <div class="perf-score">100</div>
+        <div class="perf-label">Best Practices</div>
+      </div>
+      <div class="perf-card">
+        <div class="perf-score">100</div>
+        <div class="perf-label">SEO</div>
+      </div>
+    </div>
+    <div class="fade-up" style="background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px; max-width: 600px; margin: 0 auto;">
+      <div style="margin-bottom: 6px; font-size: 13px; font-weight: 600; color: var(--text-primary);">Core Web Vitals targets</div>
+      <div style="height: 1px; background: var(--border); margin: 14px 0 20px;"></div>
+      <div class="perf-bar-wrap">
+        <div class="perf-bar-label"><span>Largest Contentful Paint (LCP)</span><span style="font-weight:600;">&lt; 0.8s</span></div>
+        <div class="perf-bar"><div class="perf-bar-fill" style="width: 92%;"></div></div>
+      </div>
+      <div class="perf-bar-wrap">
+        <div class="perf-bar-label"><span>Interaction to Next Paint (INP)</span><span style="font-weight:600;">&lt; 100ms</span></div>
+        <div class="perf-bar"><div class="perf-bar-fill blue" style="width: 96%;"></div></div>
+      </div>
+      <div class="perf-bar-wrap">
+        <div class="perf-bar-label"><span>Cumulative Layout Shift (CLS)</span><span style="font-weight:600;">0.00</span></div>
+        <div class="perf-bar"><div class="perf-bar-fill" style="width: 100%;"></div></div>
+      </div>
+      <div class="perf-bar-wrap">
+        <div class="perf-bar-label"><span>Total page weight</span><span style="font-weight:600;">&lt; 200KB</span></div>
+        <div class="perf-bar"><div class="perf-bar-fill amber" style="width: 78%;"></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CAREERS -->
+<section id="careers">
+  <div class="container">
+    <div class="careers-split">
+      <div class="careers-text fade-up">
+        <div class="label-chip"><i class="fa-solid fa-people-group"></i> Employer Branding</div>
+        <h2>Attracting global talent — from bookkeepers to CFOs.</h2>
+        <p>Each site features a dedicated Careers section that showcases your 100% remote, work-from-anywhere culture. Designed to convert passive candidates into active applicants.</p>
+        <div class="roles-list">
+          <a href="#" class="role-row">
+            <div class="role-info">
+              <div class="role-icon"><i class="fa-solid fa-chart-pie"></i></div>
+              <div>
+                <div class="role-name">Fractional CFO</div>
+                <div class="role-meta">Remote · Contract · Global</div>
+              </div>
+            </div>
+            <span class="role-badge">Hiring</span>
+          </a>
+          <a href="#" class="role-row">
+            <div class="role-info">
+              <div class="role-icon"><i class="fa-solid fa-book"></i></div>
+              <div>
+                <div class="role-name">Senior Bookkeeper</div>
+                <div class="role-meta">Remote · Full-time · Canada/Global</div>
+              </div>
+            </div>
+            <span class="role-badge">Hiring</span>
+          </a>
+          <a href="#" class="role-row">
+            <div class="role-info">
+              <div class="role-icon"><i class="fa-solid fa-file-invoice"></i></div>
+              <div>
+                <div class="role-name">Tax Associate (QST/GST)</div>
+                <div class="role-meta">Remote · Full-time · Quebec focus</div>
+              </div>
+            </div>
+            <span class="role-badge">Hiring</span>
+          </a>
+        </div>
+      </div>
+      <div class="culture-grid fade-up stagger-2">
+        <div class="culture-item">
+          <i class="fa-solid fa-house-laptop"></i>
+          <h4>100% Remote</h4>
+          <p>Work from anywhere. Always. No exceptions, no hybrid mandates.</p>
+        </div>
+        <div class="culture-item">
+          <i class="fa-solid fa-earth-americas"></i>
+          <h4>Global Team</h4>
+          <p>Colleagues across Canada, Latin America, Europe, and Southeast Asia.</p>
+        </div>
+        <div class="culture-item">
+          <i class="fa-solid fa-calendar-day"></i>
+          <h4>Flexible Hours</h4>
+          <p>Async-first culture. Overlap windows, not rigid 9–5 schedules.</p>
+        </div>
+        <div class="culture-item">
+          <i class="fa-solid fa-graduation-cap"></i>
+          <h4>Growth Path</h4>
+          <p>Clear progression from staff accountant to senior roles and beyond.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SUBMISSION -->
+<section id="submission">
+  <div class="container">
+    <div class="submission-card fade-up">
+      <div class="label-chip"><i class="fa-solid fa-paper-plane"></i> Phase 1 Submission</div>
+      <h2>Ready to move fast?</h2>
+      <p>Submit your enquiry or proposal response below. We're prepared to start immediately to meet the May 24 launch commitment.</p>
+      <div class="deadline-banner">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        <span><strong>Deadline:</strong> Proposals accepted until April 25, 2026. Launch target: May 24, 2026.</span>
+      </div>
+      <div class="form-grid">
+        <div class="form-field">
+          <label>First name</label>
+          <input type="text" class="form-input" placeholder="Jane">
+        </div>
+        <div class="form-field">
+          <label>Last name</label>
+          <input type="text" class="form-input" placeholder="Smith">
+        </div>
+        <div class="form-field">
+          <label>Email address</label>
+          <input type="email" class="form-input" placeholder="jane@studio.com">
+        </div>
+        <div class="form-field">
+          <label>Company / Studio</label>
+          <input type="text" class="form-input" placeholder="Your studio name">
+        </div>
+        <div class="form-field full">
+          <label>Portfolio / Case studies URL</label>
+          <input type="url" class="form-input" placeholder="https://yourstudio.com/work">
+        </div>
+        <div class="form-field full">
+          <label>Brief proposal summary</label>
+          <textarea class="form-textarea" placeholder="Describe your approach, relevant experience with bilingual builds or interactive calculators, and any questions about the brief..."></textarea>
+        </div>
+      </div>
+      <button class="submit-btn" onclick="this.innerHTML='<i class=\'fa-solid fa-circle-check\'></i> Proposal submitted — we\'ll be in touch within 24 hours.'; this.style.background='#22c55e';">
+        <i class="fa-solid fa-paper-plane"></i> Submit Proposal
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <div class="footer-logo">Cloud<span>First</span> Studio</div>
+        <div class="footer-tagline">Premium web design for accounting &amp; advisory brands</div>
+      </div>
+      <div class="footer-brands">
+        <div class="footer-brand-group">
+          <h5>Brands in Scope</h5>
+          <a href="https://www.thecfo.site" target="_blank" rel="noopener">The CFO Site</a>
+          <a href="https://www.theaccounting.site" target="_blank" rel="noopener">The Accounting Site</a>
+          <a href="https://www.afaccounting.ca" target="_blank" rel="noopener">AF Accounting</a>
+          <a href="https://6ixfinance.com" target="_blank" rel="noopener">6ixFinance</a>
+        </div>
+        <div class="footer-brand-group">
+          <h5>Proposal Sections</h5>
+          <a href="#flagship">Flagship Mockup</a>
+          <a href="#estimator">Fee Estimator</a>
+          <a href="#bilingual">Bilingual Demo</a>
+          <a href="#timeline">Timeline</a>
+          <a href="#careers">Careers</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>Design Pitch — Phase 1 Submission &copy; 2026</span>
+      <span>Target launch: May 24, 2026</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+function calcEstimate() {
+  const txn = parseInt(document.getElementById('txnRange').value);
+  const pay = parseInt(document.getElementById('payRange').value);
+  const tax = parseInt(document.getElementById('taxFiling').value);
+  const mult = parseFloat(document.getElementById('bizType').value);
+  const base = 180 + (txn * 1.8) + (pay * 22) + tax;
+  const total = Math.round(base * mult / 10) * 10;
+  document.getElementById('estPrice').textContent = '$' + total.toLocaleString();
+}
+
+function toggleLang(isEn, btn) {
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const en = document.getElementById('langEn');
+  const fr = document.getElementById('langFr');
+  en.style.opacity = isEn ? '1' : '0.4';
+  fr.style.opacity = isEn ? '0.4' : '1';
+  en.style.transition = 'opacity 0.3s';
+  fr.style.transition = 'opacity 0.3s';
+}
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+calcEstimate();
+</script>
+</body>
+</html>
